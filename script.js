@@ -13,6 +13,7 @@
 const categoryContainer= document.getElementById("category-container");
 const newsContainer =document.getElementById("news-container");
 const bookmarkContainer =document.getElementById("bookmark-container");
+const bookmarkCount = document.getElementById("bookmark-count");
 let bookmarks =[];
 
 // async aWAI way 
@@ -101,6 +102,7 @@ const handleBookmarks =(e)=>{
         id: id,
     })
     showBookmarks(bookmarks)
+   
 };
 const showBookmarks = (bookmarks)=>{
     console.log(bookmarks);
@@ -114,6 +116,7 @@ bookmarkContainer.innerHTML +=`
 `
 // console.log(bookmark.id)
      })
+      bookmarkCount.innerText = bookmarks.length;
 };
 
 const handleDeleteBookmark =(bookmarkId) =>{
