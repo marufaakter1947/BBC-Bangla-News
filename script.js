@@ -14,6 +14,8 @@ const categoryContainer= document.getElementById("category-container");
 const newsContainer =document.getElementById("news-container");
 const bookmarkContainer =document.getElementById("bookmark-container");
 const bookmarkCount = document.getElementById("bookmark-count");
+const newsDetailsModal = document.getElementById("news-details-modal");
+const modalContainer = document.getElementById("modal-container");
 let bookmarks =[];
 
 // async aWAI way 
@@ -83,7 +85,10 @@ articles.forEach(article => {
 
     <h1 class="font-extrabold">${article.title}</h1>
     <p class="text-sm">${article.time}</p>
-    <button class="btn">Bookmark</button>
+   <div class="flex flex-col items-center gap-2 ">
+    <button class="btn mt-2">Bookmark</button>
+    <button class="btn">View Details</button>
+   </div>
 
    </div>
     </div>
@@ -95,11 +100,16 @@ newsContainer.addEventListener("click",(e)=>{
 if(e.target.innerText === "Bookmark"){
   handleBookmarks(e)
 }
+if(e.target.innerText === "View Details"){
+  handleViewDetails(e)
+}
 })
 
 const handleBookmarks =(e)=>{
-      const title=e.target.parentNode.children[0].innerText;
-    const id = e.target.parentNode.id
+
+     const card = e.target.closest("div[id]"); // যেই div এ id আছে
+  const title = card.querySelector("h1").innerText; // title নাও
+  const id = card.id;
     // console.log(id)
     bookmarks.push({
         title: title,
@@ -108,6 +118,27 @@ const handleBookmarks =(e)=>{
     showBookmarks(bookmarks)
    
 };
+const handleViewDetails =(e)=>{
+      const card = e.target.closest("div[id]");  
+   const id = card.id;  
+   fetch(`https://news-api-fs.vercel.app/api/news/${id}`)
+   .then(res => res.json())
+   .then(data => {
+    console.log(data)
+    showDetailsNews(data.article)
+   })
+   .catch(err=>{
+    console.log(err)
+   })
+}
+const showDetailsNews =(article)=>{
+newsDetailsModal.showModal();
+modalContainer.innerHTML=`
+<h1 class="font-bold">${article.title}</h1>
+<img src="${article.images[0].url}"/>
+<p>${article.content.join("")}</p>
+`
+}
 const showBookmarks = (bookmarks)=>{
     // console.log(bookmarks);
     bookmarkContainer.innerHTML=""
