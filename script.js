@@ -65,15 +65,16 @@ fetch(`https://news-api-fs.vercel.app/api/categories/${categoryId}`)
 }
 
 const showNewsByCategory =(articles)=>{
-    console.log(articles);
+    // console.log(articles);
     newsContainer.innerHTML=""
 articles.forEach(article => {
+    // console.log(article.id);
     newsContainer.innerHTML += `
     <div class="border border-gray-300 rounded-lg">
      <div>
         <img src="${article.image.srcset[5].url}" >
     </div>
-   <div ${article.id} class="p-2">
+   <div id= "${article.id}" class="p-2">
 
     <h1 class="font-extrabold">${article.title}</h1>
     <p class="text-sm">${article.time}</p>
@@ -94,23 +95,33 @@ if(e.target.innerText === "Bookmark"){
 const handleBookmarks =(e)=>{
       const title=e.target.parentNode.children[0].innerText;
     const id = e.target.parentNode.id
+    // console.log(id)
     bookmarks.push({
         title: title,
         id: id,
     })
-    showBookmarks(bookmarks);
-}
-
+    showBookmarks(bookmarks)
+};
 const showBookmarks = (bookmarks)=>{
+    console.log(bookmarks);
     bookmarkContainer.innerHTML=""
      bookmarks.forEach(bookmark =>{
 bookmarkContainer.innerHTML +=`
 <div class="border my-2 p-1 rounded-sm">
 <h1>${bookmark.title}</h1>
-<button class="btn btn-xs">Delete</button>
+    <button onclick ="handleDeleteBookmark('${bookmark.id}')" class="btn btn-xs">Delete</button>
 </div>
 `
+// console.log(bookmark.id)
      })
+};
+
+const handleDeleteBookmark =(bookmarkId) =>{
+//    console.log(bookmarkId)
+const filteredBookmarks =bookmarks.filter(bookmark => bookmark.id !== bookmarkId);
+// console.log(filteredBookmarks)
+bookmarks =filteredBookmarks
+showBookmarks(bookmarks)
 }
 loadCategoryAsync();
 loadNewsCategory("main");
