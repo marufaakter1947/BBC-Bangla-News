@@ -43,7 +43,7 @@ const showCategory = (categories) =>{
         
 if(e.target.localName ==="li"){
 //  console.log(e.target.id)
-
+showLoading();
 e.target.classList.add("border-b-4")
 loadNewsCategory(e.target.id)
 }
@@ -66,7 +66,7 @@ fetch(`https://news-api-fs.vercel.app/api/categories/${categoryId}`)
 }
 
 const showNewsByCategory =(articles)=>{
-    // console.log(articles);
+    console.log(articles);
     newsContainer.innerHTML=""
 articles.forEach(article => {
     // console.log(article.id);
@@ -126,5 +126,13 @@ const filteredBookmarks =bookmarks.filter(bookmark => bookmark.id !== bookmarkId
 bookmarks =filteredBookmarks
 showBookmarks(bookmarks)
 }
+
+const showLoading =()=>{
+    newsContainer.innerHTML =`
+      <div class="bg-red-500 p-3 rounded-sm">Loading...</div>
+    `
+}
+
+
 loadCategoryAsync();
 loadNewsCategory("main");
