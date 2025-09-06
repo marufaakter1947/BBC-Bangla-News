@@ -12,6 +12,8 @@
 
 const categoryContainer= document.getElementById("category-container");
 const newsContainer =document.getElementById("news-container");
+const bookmarkContainer =document.getElementById("bookmark-container");
+let bookmarks =[];
 
 // async aWAI way 
 const loadCategoryAsync = async()=>{
@@ -46,7 +48,7 @@ loadNewsCategory(e.target.id)
 }
     })
 }
-loadCategoryAsync();
+
 
 const loadNewsCategory = (categoryId) =>{
 // console.log(categoryId)
@@ -71,7 +73,8 @@ articles.forEach(article => {
      <div>
         <img src="${article.image.srcset[5].url}" >
     </div>
-   <div class="p-2">
+   <div ${article.id} class="p-2">
+
     <h1 class="font-extrabold">${article.title}</h1>
     <p class="text-sm">${article.time}</p>
     <button class="btn">Bookmark</button>
@@ -81,4 +84,33 @@ articles.forEach(article => {
     `
 });
 }
+newsContainer.addEventListener("click",(e)=>{
+// console.log(e)
+if(e.target.innerText === "Bookmark"){
+  handleBookmarks(e)
+}
+})
+
+const handleBookmarks =(e)=>{
+      const title=e.target.parentNode.children[0].innerText;
+    const id = e.target.parentNode.id
+    bookmarks.push({
+        title: title,
+        id: id,
+    })
+    showBookmarks(bookmarks);
+}
+
+const showBookmarks = (bookmarks)=>{
+    bookmarkContainer.innerHTML=""
+     bookmarks.forEach(bookmark =>{
+bookmarkContainer.innerHTML +=`
+<div class="border my-2 p-1 rounded-sm">
+<h1>${bookmark.title}</h1>
+<button class="btn btn-xs">Delete</button>
+</div>
+`
+     })
+}
+loadCategoryAsync();
 loadNewsCategory("main");
