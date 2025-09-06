@@ -11,6 +11,7 @@
 // loadCategory();
 
 const categoryContainer= document.getElementById("category-container");
+const newsContainer =document.getElementById("news-container");
 
 // async aWAI way 
 const loadCategoryAsync = async()=>{
@@ -36,10 +37,48 @@ const showCategory = (categories) =>{
         allLi.forEach(li => {
             li.classList.remove("border-b-4")
         });
+        
 if(e.target.localName ==="li"){
-console.log(e.target)
+//  console.log(e.target.id)
+
 e.target.classList.add("border-b-4")
+loadNewsCategory(e.target.id)
 }
     })
 }
 loadCategoryAsync();
+
+const loadNewsCategory = (categoryId) =>{
+// console.log(categoryId)
+fetch(`https://news-api-fs.vercel.app/api/categories/${categoryId}`)
+.then((res)=>res.json())
+.then((data) => {
+    showNewsByCategory(data.articles)
+
+})
+
+.catch(err =>{
+    console.log(err);
+})
+}
+
+const showNewsByCategory =(articles)=>{
+    console.log(articles);
+    newsContainer.innerHTML=""
+articles.forEach(article => {
+    newsContainer.innerHTML += `
+    <div class="border border-gray-300 rounded-lg">
+     <div>
+        <img src="${article.image.srcset[5].url}" >
+    </div>
+   <div class="p-2">
+    <h1 class="font-extrabold">${article.title}</h1>
+    <p class="text-sm">${article.time}</p>
+    <button class="btn">Bookmark</button>
+
+   </div>
+    </div>
+    `
+});
+}
+loadNewsCategory("main");
