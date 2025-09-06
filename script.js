@@ -28,8 +28,18 @@ const loadCategoryAsync = async()=>{
 const showCategory = (categories) =>{
  categories.forEach( category => {
         categoryContainer.innerHTML += `
-          <li id="${category.id}" class="hover:border-b-4 hover:border-red-700 cursor-pointer">${category.title}</li>
+          <li id="${category.id}" class="hover:border-b-4 hover:border-red-700 border-red-700 cursor-pointer">${category.title}</li>
         `
     });
+    categoryContainer.addEventListener("click",(e)=>{
+        const allLi =document.querySelectorAll("li");
+        allLi.forEach(li => {
+            li.classList.remove("border-b-4")
+        });
+if(e.target.localName ==="li"){
+console.log(e.target)
+e.target.classList.add("border-b-4")
+}
+    })
 }
 loadCategoryAsync();
