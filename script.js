@@ -61,12 +61,16 @@ fetch(`https://news-api-fs.vercel.app/api/categories/${categoryId}`)
 })
 
 .catch(err =>{
-    console.log(err);
+
+    showError()
 })
 }
 
 const showNewsByCategory =(articles)=>{
-    console.log(articles);
+    if(articles.length === 0){
+        showEmptyMessage();
+        return;
+    }
     newsContainer.innerHTML=""
 articles.forEach(article => {
     // console.log(article.id);
@@ -105,7 +109,7 @@ const handleBookmarks =(e)=>{
    
 };
 const showBookmarks = (bookmarks)=>{
-    console.log(bookmarks);
+    // console.log(bookmarks);
     bookmarkContainer.innerHTML=""
      bookmarks.forEach(bookmark =>{
 bookmarkContainer.innerHTML +=`
@@ -129,10 +133,20 @@ showBookmarks(bookmarks)
 
 const showLoading =()=>{
     newsContainer.innerHTML =`
-      <div class="bg-red-500 p-3 rounded-sm">Loading...</div>
+      <div class="bg-green-500 p-3 rounded-sm">Loading...</div>
     `
 }
 
+const showError =()=>{
+ newsContainer.innerHTML =`
+      <div class="bg-red-500 p-3 rounded-sm">Something went wrong</div>
+    `
+}
+ const showEmptyMessage = () =>{
+     newsContainer.innerHTML =`
+      <div class="bg-orange-500 p-3 rounded-sm">No news found for this category</div>
+    `
+ }
 
 loadCategoryAsync();
 loadNewsCategory("main");
